@@ -1,0 +1,70 @@
+{% extends 'users/base.html' %}
+{% block content %}
+{% load static %}
+<section class="mt-50 mb-50">
+    <div class="container mt-5">
+        <div class="row">
+          <div class="col-md-6 offset-md-3" style="border: 2px solid #3b2c7610; border-radius: 10px;">
+            <div class="card">
+              <div class="card-header bg-warning text-white">
+                <h4 class="mb-0">Order Invoice</h4><br>
+                <h5 class="mb-0">Order reference number : {{main_order.id}}</h5>
+              </div>
+              <div class="card-body">
+                <!-- Customer Information -->
+                <div class="mb-4">
+                  <h5>Customer Information</h5>
+                  <p><strong>Name: </strong>{{main_order.address.name}}</p>
+                  <p><strong>Email: </strong>{{main_order.user.email}}</p>
+                  <p><strong>Address: </strong>{{main_order.address.house_name}} , {{main_order.address.locality}}, {{main_order.address.city}}</p>
+                  <p><strong>Zipcode: </strong>{{main_order.address.zipcode}}</p>
+                  <p><strong>Ordered on : </strong>{{main_order.ordered_date}}</p>
+                  <p><strong>Payment mode : </strong>{{main_order.payment_mode}}</p>
+                </div>
+      
+                <!-- Order Details -->
+                <div class="mb-4">
+                  <h5>Order Details</h5>
+                  <table class="table" style="border: 2px solid #007bff;">
+                    <thead style="background-color: #007bff; color: white;">
+                      <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for i in order_items %} 
+                      <tr>
+                        <td>{{i.Product.title}}</td>
+                        <td>{{i.quantity}}</td>
+                        <td>Rs.{{i.Product.our_price}}</td>
+                        <td>Rs.{{i.total_cost}}</td>
+                      </tr>
+                    {% endfor %} 
+                      <!-- Add more rows for additional products -->
+                    </tbody>
+                  </table>
+                </div>
+      
+                <!-- Order Summary -->
+                <div>
+                  <h5>Order Summary</h5>
+                  <p><strong>Subtotal:</strong> Rs. {{main_order.original_price}}</p>
+                  <p><strong>Discount:</strong> Rs. {{main_order.discount_amount}}</p>
+                  <p><strong>Total:</strong> Rs. {{main_order.total_amount}}</p>
+                </div>
+              </div>
+            </div>
+            <div class="text-center mt-4">
+              <a href="{% url 'invoice_pdf' %}" class="btn btn-primary" download>Download PDF</a>
+              <a href="{% url 'myorders' %}" class="btn btn-primary">Back to Orders</a>
+            </div>
+          </div>
+        </div>
+      </div>
+</section>
+
+
+{% endblock %}

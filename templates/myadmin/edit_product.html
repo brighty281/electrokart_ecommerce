@@ -1,0 +1,148 @@
+{% extends 'myadmin/base.html' %}
+{% block content %}
+{% load static %}
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title"> Edit product</h2>
+                    <p>Edit products here</p>
+                </div>
+                <div>
+                    
+                    <a href="{% url 'product_list' %}" class="btn btn-primary btn-sm rounded">Back to list</a>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <header class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col col-check flex-grow-0">
+                            <div class="form-check ms-2">
+                                <input class="form-check-input" type="checkbox" value="">
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+                            
+                        </div>
+                        <div class="col-md-2 col-6">
+                            
+                        </div>
+                        <div class="col-md-2 col-6">
+                            
+                        </div>
+                    </div>
+                </header> <!-- card-header end// -->
+                <div class="card-body">
+                    <!-- product_form.html -->
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <label>Main Category:</label>
+                            <select name="main_category">
+                                {% for category in main_category %}
+                                    <option value="{{ category.id }}" {% if category.id == my_product.main_category_id %}selected{% endif %}>{{ category.name }}</option>
+                                {% endfor %}
+                            </select><br><br>
+                            <label>Title:</label>
+                            <input type="text" name="title" value="{{ my_product.title }}"><br><br>
+                            <label>Base name (for similar variants):</label>
+                            <input type="text" name="base_name" value="{{ my_product.base_name }}"><br><br>
+                            <label>Product status</label>
+                            <select name="status">
+                                <option value="active">active</option>
+                                <option value="disable">disable</option>
+                            </select><br><br><br>
+                            
+                            <label>Our Price:</label>
+                            <input type="number" name="our_price" value="{{ my_product.our_price }}" ><br><br>
+                            <label>Real Price:</label>
+                            <input type="number" name="real_price" value="{{ my_product.real_price }}"><br><br>
+                            <label>Description:</label>
+                            <textarea name="description" style="width: 400px; height: 200px;">{{ my_product.description }}</textarea><br><br>
+                            <label>Main Image:</label>
+                            <input type="file" name="main_img" value="{{ my_product.main_img }}"><br><br>
+                            <label>Additional Images:</label>
+                            <input type="file" name="images" multiple ><br><br>
+
+                            <div id="highlights-container">
+                                <label>Product Highlights:</label><br>
+                                <!-- Display existing highlights -->
+                                {% for highlight in existing_highlights %}
+                                <textarea name="highlights[]" placeholder="Enter product highlight">{{ highlight.highlight }}</textarea>
+                                {% endfor %}
+                            </div>
+                            <button type="button" onclick="addHighlightField()">Add Product Highlight</button><br><br>
+                            
+                            <div id="features-container">
+                                <!-- Display existing additional info -->
+                                {% for info in existing_additional_info %}
+                                <div class="feature-container">
+                                    <label>Enter Feature & Feature description</label><br>
+                                    <textarea class="feature-input" name="features[]" placeholder="Enter feature">{{ info.feature }}</textarea>
+                                    <textarea class="feature-description" name="feature_descriptions[]" placeholder="Enter feature description">{{ info.feature_description }}</textarea>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <button type="button" onclick="addFeatureField()">Add Feature</button><br><br>
+
+
+                            <button type="submit">Submit</button>
+                        </form>
+            </div> <!-- card end// -->
+            <script>
+                function addHighlightField() {
+                    const container = document.getElementById('highlights-container');
+                    const textarea = document.createElement('textarea');
+                    textarea.setAttribute('name', 'highlights[]');
+                    textarea.setAttribute('placeholder', 'Enter product highlight');
+                    textarea.addEventListener('input', function() {
+                        if (this.value.trim() === '') {
+                            container.removeChild(textarea);
+                        }
+                    });
+                    container.appendChild(textarea);
+                }
+            
+                function addFeatureField() {
+                    const container = document.getElementById('features-container');
+                    const featureDiv = document.createElement('div');
+                    featureDiv.setAttribute('class', 'feature-container');
+            
+                    const featureInput = document.createElement('textarea');
+                    featureInput.setAttribute('class', 'feature-input');
+                    featureInput.setAttribute('name', 'features[]');
+                    featureInput.setAttribute('placeholder', 'Enter feature');
+                    featureInput.addEventListener('input', function() {
+                        if (this.value.trim() === '') {
+                            container.removeChild(featureDiv);
+                        }
+                    });
+            
+                    const featureDescription = document.createElement('textarea');
+                    featureDescription.setAttribute('class', 'feature-description');
+                    featureDescription.setAttribute('name', 'feature_descriptions[]');
+                    featureDescription.setAttribute('placeholder', 'Enter feature description');
+                    featureDescription.addEventListener('input', function() {
+                        if (this.value.trim() === '') {
+                            container.removeChild(featureDiv);
+                        }
+                    });
+            
+                    featureDiv.appendChild(featureInput);
+                    featureDiv.appendChild(featureDescription);
+                    container.appendChild(featureDiv);
+                }
+            </script>
+            
+            <div class="pagination-area mt-30 mb-50">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-start">
+                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                        <li class="page-item"><a class="page-link" href="#">02</a></li>
+                        <li class="page-item"><a class="page-link" href="#">03</a></li>
+                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                        <li class="page-item"><a class="page-link" href="#">16</a></li>
+                        <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </section> <!-- content-main end// -->
+{% endblock %}

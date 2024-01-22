@@ -1,0 +1,85 @@
+{% extends 'myadmin/base.html' %}
+{% block content %}
+{% load static %}
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Edit order</h2>
+                    <p>Edit your order here</p>
+                </div>
+                <div>
+                    <input type="text" placeholder="Search order ID" class="form-control bg-white">
+                </div>
+            </div>
+            <div class="card mb-4">
+                <header class="card-header">
+                    <div class="row gx-3">
+                        <div class="col-lg-4 col-md-6 me-auto">
+                            <input type="text" placeholder="Search..." class="form-control">
+                        </div>
+                        <div class="col-lg-2 col-6 col-md-3">
+                            <select class="form-select">
+                                <option>Status</option>
+                                <option>Active</option>
+                                <option>Disabled</option>
+                                <option>Show all</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2 col-6 col-md-3">
+                            <select class="form-select">
+                                <option>Show 20</option>
+                                <option>Show 30</option>
+                                <option>Show 40</option>
+                            </select>
+                        </div>
+                    </div>
+                </header> <!-- card-header end// -->
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <label>Select user</label><br>
+                        <select name="user"><br>
+                            {% for i in all_users %}
+                                <option value="{{i.id}}" {% if i.id == my_order.user.id %}selected{% endif %}>{{i.username}}</option>
+                            {% endfor %}
+                        </select><br><br>
+                        <label>Change product</label><br>
+                        <select name="product">
+                            {% for i in all_products %}
+                                <option value="{{i.id}}" {% if i.id == my_order.Product.id %}selected{% endif %}>{{i.title}}</option>
+                            {% endfor %}
+                        </select><br><br>
+                        <label>My address</label><br>
+                        <select name="address">
+                            {% for i in all_address %}
+                                <option value="{{i.id}}" {% if i.id == my_order.address.id %}selected{% endif %}>{{i.name}}-{{i.locality}}-{{i.city}}</option>
+                            {% endfor %}
+                        </select><br><br>
+                        <label>Quantity</label><br>
+                        <input type="number" name="quantity" value="{{my_order.quantity}}"><br><br>
+                        <label>Order Status</label><br>
+                        <select name="status">
+                            {% for i in status_choices %}
+                                <option value="{{i.0}}" {% if i.0 == my_order.status %}selected{% endif %}>{{i.1}}</option>
+                            {% endfor %}
+                        </select><br><br>
+                        <label>Delivery_date</label><br>
+                        <input type="datetime-local" id="id_delivery_date" name="delivery_date" value="{{ my_order.delivery_date|date:'Y-m-d\TH:i' }}"><br><br>
+                        <button type="submit">Submit</button>
+                    </form>
+                </div> <!-- card-body end// -->
+            </div> <!-- card end// -->
+            <div class="pagination-area mt-15 mb-50">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-start">
+                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                        <li class="page-item"><a class="page-link" href="#">02</a></li>
+                        <li class="page-item"><a class="page-link" href="#">03</a></li>
+                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                        <li class="page-item"><a class="page-link" href="#">16</a></li>
+                        <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </section> <!-- content-main end// -->
+{% endblock %}

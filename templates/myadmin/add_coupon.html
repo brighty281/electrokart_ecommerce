@@ -1,0 +1,43 @@
+{% extends 'myadmin/base.html' %}
+{% block content %}
+{% load static %}
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Create coupons</h2>
+                    <p>Create coupons here</p>
+                </div>
+                <div>
+                    
+                    <a href="{% url 'couponlist' %}" class="btn btn-primary btn-sm rounded">back</a>
+                </div>
+            </div>
+            <div class="card mb-4">
+                
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <label>New coupon code</label><br>
+                        <input type="text" name=code>
+                        <br><br>
+                        <label>Discount Rate</label><br>
+                        <input type="number" name="discount" min="1" max="100" step="1"><br><br>
+                        <label>Valid from</label><br>
+                        <input type="datetime-local" id="valid_from" name="valid_from"><br><br>
+                        <label>Valid to</label><br>
+                        <input type="datetime-local" id="valid_to" name="valid_to"><br><br>
+                        <label>Is Active</label>
+                    
+                        <select name="status" id="status">
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                        <br><br>
+                        <button type="submit">Submit</button>
+                    </form>
+                    
+                </div>
+            </div> <!-- card end// -->
+            
+        </section> <!-- content-main end// -->
+{% endblock %}

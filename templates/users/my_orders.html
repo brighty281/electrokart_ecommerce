@@ -1,0 +1,81 @@
+{% extends 'users/base.html' %}
+{% block content %}
+<section class="mt-50 mb-50">
+    <div class="container">
+        <div style="margin-bottom: 30px;"><h3>My orders</h3></div>
+        <div class="row">
+            <div class="col-12">
+                <div class="table-responsive">
+                    
+                    <table class="table shopping-summery text-center clean">
+                        <thead>
+                            <tr class="main-heading">
+                                <th scope="col">Order ID (click to get the invoice)</th>
+                                <th scope="col">Image</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Discount status</th>
+                                <th scope="col">Total price</th>
+                                <th scope="col">Deliver to</th>
+                                <th scope="col">Arrive on</th>
+                                
+                                <th scope="col">Payment status</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Cancel</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in placed_orders %}
+                            <tr>
+                                <td class="price" data-title="Price"><a href="{% url 'orderpage_invoice' uid=i.order_id %}">#{{i.order_id}}</a></td>
+
+                                <td class="image product-thumbnail"><img src="{{i.Product.main_img.url}}" alt=""></td>
+                                <td class="product-des product-name">
+                                    <h5 class="product-name"><a href="#">{{ i.Product.title }}</a></h5>
+                                    <p class="font-xs"> Quantity : {{i.quantity}}</p>
+                                </td>
+                                {% if i.discount_status == True %}
+                                <td class="price" data-title="Price"><span> Discount_applied </span></td>
+                                {% else %}
+                                <td class="price" data-title="Price"><span> NIL </span></td>
+                                {% endif %}
+                                <td class="price" data-title="Price"><span>Rs. {{ i.total_cost}} </span></td>
+                                <td class="text-center">
+                                  <span style="text-transform: capitalize;">{{i.address.name}}<br>{{i.address.house_name}}<br>{{i.address.locality}}<br>{{i.address.city}}</span> 
+                                </td>
+                                <td class="price" data-title="Price"><span> {{ i.delivery_date }} </span></td>
+                                
+                                <td class="price" data-title="Price"><span> {{ i.payment_status }} </span></td>
+                                <td class="text-right" data-title="Cart">
+                                    <span style="text-transform: capitalize;"><h4>{{ i.status }}</h4></span>
+                                </td>
+                                <td class="action" data-title="Remove">
+                                    {% if i.status == 'delivered' %}
+                                        <a href="{%url 'return_order' i.id %}" class="btn btn-danger cancel-button">Return</a>
+                                    {% elif i.status == 'requested for return' %}
+                                        <h4>Request under process</h4>
+                                    {% elif i.status == 'Cancelled' or i.status == 'requested for cancellation and refund' or i.status == 'requested for cancellation' %}
+                                        <p>.</p>
+                                    {% else %}
+                                        <a href="{%url 'cancelorder' i.id %}" class="btn btn-danger cancel-button">Cancel</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            
+                            
+                        </tbody>
+                    </table>
+                </div>
+                <div class="cart-action text-end">
+                    
+                    <a href="{% url 'all_productlist' %}" class="btn "> <i class="fi-rs-box-alt mr-10"></i> Continue Shopping</a>
+                </div>
+                <div class="divider center_icon mt-50 mb-50"><i class="fi-rs-fingerprint"></i></div>
+                
+            
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock%}

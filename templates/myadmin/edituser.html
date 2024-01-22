@@ -1,0 +1,61 @@
+{% extends 'myadmin/base.html' %}
+{% block content %}
+{% load static %}
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Add user</h2>
+                    
+                </div>
+                <div>
+                    <a href="#" class="btn btn-light rounded font-md">Export</a>
+                    <a href="#" class="btn btn-light rounded  font-md">Import</a>
+                    <a href="{% url 'userslist' %}" class="btn btn-primary btn-sm rounded">back</a>
+                </div>
+            </div>
+            <div class="card mb-4">
+                 <!-- card-header end// -->
+                <div class="card-body">
+                  <form action="{% url 'edituser' user.id %}" method="POST">
+                    {% csrf_token %}
+                
+                                    {% if messages %}
+                                    {% for msg in messages %}
+                                    <p class="message {% if message.tags %}{{ message.tags }}{% endif %}">{{msg}}</p>
+                                    {% endfor %}
+                                    {% endif %}
+                  <div>
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" value="{{ user.username }}" required><br><br>
+                    <label>User Status</label>
+                    <select class="form-control" name="user_status">
+                        <option value="activate">Activate</option>
+                        <option value="inactivate">Inactivate</option>
+                    </select>
+                    <label for="fname">First name:</label>
+                    <input type="text" id="fname" name="fname" value="{{ my_customer.first_name }}" required><br><br>
+                    <label for="fname">Last name:</label>
+                    <input type="text" id="lname" name="lname" value="{{ my_customer.last_name }}" required><br><br>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" value="{{ user.email }}" required><br><br>
+                    <label for="fname">phone number:</label>
+                    <input type="tel" id="phone" name="phone" value="{{ my_customer.phone }}" required><br><br>
+                    <button type="submit">Edit User</button><br><br>
+                  </div>
+                </form>
+                </div> <!-- card-body end// -->
+            </div> <!-- card end// -->
+            <div class="pagination-area mt-30 mb-50">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-start">
+                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                        <li class="page-item"><a class="page-link" href="#">02</a></li>
+                        <li class="page-item"><a class="page-link" href="#">03</a></li>
+                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                        <li class="page-item"><a class="page-link" href="#">16</a></li>
+                        <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </section> <!-- content-main end// -->
+{% endblock %}

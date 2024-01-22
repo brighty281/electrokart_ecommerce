@@ -1,0 +1,39 @@
+<!-- pdf_invoice_template.html -->
+
+<!-- Customer Information -->
+<h6>electrokart.com</h6>
+<center><strong>Invoice</strong></center>
+<h5>Customer Information</h5>
+<p><strong>Name: </strong>{{ main_order.address.name }}</p>
+<p><strong>Email: </strong>{{ main_order.user.email }}</p>
+<p><strong>Address: </strong>{{ main_order.address.house_name }}, {{ main_order.address.locality }}, {{ main_order.address.city }}</p>
+<p><strong>Zipcode: </strong>{{ main_order.address.zipcode }}</p>
+<p><strong>Ordered on : </strong>{{ main_order.ordered_date }}</p>
+<p><strong>Payment mode : </strong>{{main_order.payment_mode}}</p>
+<!-- Order Details -->
+<h5>Order Details</h5>
+<table style="border: 1px solid #000000;">
+    
+    <tbody>
+        <tr>
+            <td>Product</td>
+            <td>Quantity</td>
+            <td>Price</td>
+            <td>Total</td>
+        </tr>
+        {% for i in order_items %}
+        <tr>
+            <td>{{ i.Product.title }}</td>
+            <td>{{ i.quantity }}</td>
+            <td>Rs.{{ i.Product.our_price }}</td>
+            <td>Rs.{{ i.total_cost }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Order Summary -->
+<h5>Order Summary</h5>
+<p><strong>Subtotal:</strong> Rs. {{ main_order.original_price }}</p>
+<p><strong>Discount:</strong> Rs. {{ main_order.discount_amount }}</p>
+<p><strong>Total:</strong> Rs. {{ main_order.total_amount }}</p>

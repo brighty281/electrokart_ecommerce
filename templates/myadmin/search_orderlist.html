@@ -1,0 +1,98 @@
+{% extends 'myadmin/base.html' %}
+{% block content %}
+{% load static %}
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Order search results</h2>
+                    <p>Here is your result.</p>
+                </div>
+                <div>
+                    <input type="text" placeholder="Search order ID" class="form-control bg-white">
+                </div>
+            </div>
+            <div class="card mb-4">
+                <header class="card-header">
+                    <div class="row gx-3">
+                        <div class="col-lg-4 col-md-6 me-auto">
+                            
+                            <a href="{% url 'orders_list'%}" class="btn btn-primary">back to orders</a>
+                        </div>
+                        <div class="col-lg-2 col-6 col-md-3">
+                            <select class="form-select">
+                                <option>Status</option>
+                                <option>Active</option>
+                                <option>Disabled</option>
+                                <option>Show all</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2 col-6 col-md-3">
+                            <select class="form-select">
+                                <option>Show 20</option>
+                                <option>Show 30</option>
+                                <option>Show 40</option>
+                            </select>
+                        </div>
+                    </div>
+                </header> <!-- card-header end// -->
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                {% if result %}
+                                <tr>
+                                    <th>#ID</th>
+                                    <th scope="col">Customer</th>
+                                    <th scope="col">Product</th>
+                                    <th scope="col">total</th>
+                                    <th scope="col">status</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Delivery_date</th>
+                                    <th scope="col" class="text-end"> Action </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                {% for i in result %}
+                                <tr>
+                                    <td>{{ i.id }}</td>
+                                    <td><b>{{ i.address.name }}</b></td>
+                                    <td><b>{{i.Product.title}}</b></td>
+                                    <td>Rs. {{i.total_cost}}</td>
+                                    <td>
+                                        {% if i.status == "Cancelled" %}
+                                            <span class="badge rounded-pill alert-danger">{{i.status}}</span>
+                                        {% elif i.status == "pending" or i.status == "requested for cancellation" %}
+                                            <span class="badge rounded-pill alert-warning">{{i.status}}</span>
+                                        {% else %}
+                                            <span class="badge rounded-pill alert-success">{{i.status}}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{i.ordered_date}}</td>
+                                    <td>{{i.delivery_date}}</td>
+
+                                    <td class="text-end">
+                                        <a href="{% url 'order_details' i.id %}" class="btn btn-md rounded font-sm">Detail</a>
+                                        <div class="dropdown">
+                                            <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="#">View detail</a>
+                                                <a class="dropdown-item" href="{% url 'edit_orderlist' i.id %}">Edit info</a>
+                                                <a class="dropdown-item text-danger" href="">Delete</a>
+                                            </div>
+                                        </div> <!-- dropdown //end -->
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% else %}
+                                <center><h3>No result found</h3></center>
+                                {% endif %}
+                                
+                            </tbody>
+                        </table>
+                    </div> <!-- table-responsive //end -->
+                </div> <!-- card-body end// -->
+            </div> <!-- card end// -->
+           
+        </section> <!-- content-main end// -->
+{% endblock %}

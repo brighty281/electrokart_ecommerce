@@ -1,0 +1,49 @@
+{% extends 'myadmin/base.html' %}
+{% block content %}
+{% load static %}
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">All users</h2>
+                    <p>Users in electrokart.com</p>
+                </div>
+                <div>
+                    
+                    <a href="#" class="btn btn-primary btn-sm rounded">User coupon management</a>
+                    <a href="{% url 'addcoupon' %}" class="btn btn-primary btn-sm rounded">Add new coupon</a>
+                </div>
+            </div>
+            <div class="card mb-4">
+                
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#ID</th>
+                                    <th scope="col">Username</th>
+                                    <th scope="col" class="text-end"> view coupons </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in users %}
+                                <tr>
+                                    <td>{{forloop.counter}}</td>
+                                    <td><b>{{ i.username }}</b></td>
+                                    
+                                    
+                                    <td class="text-end">
+                                        <a href="{% url 'my_couponlist' i.id %}" class="btn btn-md rounded font-sm">View coupons</a>
+                                        
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                
+                            </tbody>
+                        </table>
+                    </div> <!-- table-responsive //end -->
+                </div>
+            </div> <!-- card end// -->
+            
+        </section> <!-- content-main end// -->
+{% endblock %}

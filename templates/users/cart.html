@@ -1,0 +1,239 @@
+﻿{% extends 'users/base.html' %}
+{% block content %}
+{% load static %}
+<div class="page-header breadcrumb-wrap">
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html" rel="nofollow">Home</a>
+            <span></span> Shop
+            <span></span> Your Cart
+        </div>
+    </div>
+</div>
+<section class="mt-50 mb-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="table-responsive">
+                    <table class="table shopping-summery text-center clean">
+                        {% if cart %}
+                        <thead>
+                            <tr class="main-heading">
+                                <th scope="col">Image</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Subtotal</th>
+                                <th scope="col">Remove</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in cart %}
+                            <tr>
+                                <td class="image product-thumbnail"><img src="{{i.product.main_img.url}}" alt=""></td>
+                                <td class="product-des product-name">
+                                    <h5 class="product-name"><a href="shop-product-right.html">{{ i.product.title }}</a></h5>
+                                    <p class="font-xs">
+                                    </p>
+                                </td>
+                                <td class="price" data-title="Price"><span>Rs. {{ i.product.our_price}} </span></td>
+                                <td class="text-center">
+                                    <div class="radius m-auto">
+                                        <button type="button" class="qty-down" pid="{{ i.product.id }}">-</button>
+                                        <span class="quantity" id="quantity-{{ i.product.id }}">{{ i.quantity }}</span>
+                                        <button type="button" class="qty-up" pid="{{ i.product.id }}">+</button>
+                                    </div>
+                                </td>
+                                <td class="text-right" data-title="Cart">
+                                    <span class="price-cell" id="subtotal-{{ i.product.id }}">Rs.{{ i.sub_total }}</span>
+
+                                </td>
+                                <td class="action" data-title="Remove"><a href="#" class="text-muted remove-cart" pid="{{i.product.id}}"><i class="fi-rs-trash"></i></a></td>
+                            </tr>
+                            {% endfor %}
+                            
+                            <tr>
+                                <td colspan="6" class="text-end">
+                                    <a href="#" class="text-muted"> <i class="fi-rs-cross-small"></i> Clear Cart</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                        {% else %}
+                        <center><h3>Your Cart is empty</h3></center>
+                        {% endif %}
+                    </table>
+                </div>
+                <div class="cart-action text-end">
+                    <a href="{% url 'show_cart'%}" class="btn "> <i class="fi-rs-box-alt mr-10"></i>update cart</a>
+                    <a href="{% url 'all_productlist' %}" class="btn "> <i class="fi-rs-box-alt mr-10"></i> Continue Shopping</a>
+                </div>
+                <div class="divider center_icon mt-50 mb-50"><i class="fi-rs-fingerprint"></i></div>
+                <div class="row mb-50">
+                    <div class="col-lg-6 col-md-12">
+                        
+                        <div class="mb-30 mt-50">
+                            <div class="heading_s1 mb-3">
+                                <h4>Apply Coupon</h4>
+                            </div>
+                            <div class="total-amount">
+                                <div class="left">
+                                    <div class="coupon">
+                                        {% if error_message %}
+                                            <p>{{ error_message }}</p>
+                                        {% elif success_message %}
+                                            <p>{{ success_message }}</p>
+                                        {% endif %}
+                                        <form action="{% url 'show_cart' %}" method="post">
+                                            {% csrf_token %}
+                                            <div class="form-row row justify-content-center">
+                                                <div class="form-group col-lg-6">
+                                                    <input class="font-medium" name="coupon_code" placeholder="Enter Your Coupon">
+                                                </div>
+                                                <div class="form-group col-lg-6">
+                                                    <button class="btn  btn-sm"><i class="fi-rs-label mr-10"></i>Apply</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12">
+                        <div class="border p-md-4 p-30 border-radius cart-totals">
+                            <div class="heading_s1 mb-3">
+                                <h4>Cart Totals</h4>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tbody>
+                                       <!-- <tr>
+                                            <td class="cart_total_label">Cart Subtotal</td>
+                                            <td class="cart_total_amount"><span class="font-lg fw-900 text-brand"></span></td>
+                                        </tr>-->
+                                        <tr>
+                                            <td class="cart_total_label">Shipping</td>
+                                            <td class="cart_total_amount"> <i class="ti-gift mr-5"></i> Free Shipping</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="cart_total_label">Discount</td>
+                                            <td class="cart_total_amount"> <i class="ti-gift mr-5"></i>{{discount_amount}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="cart_total_label">Total</td>
+                                            <td class="cart_total_amount"><strong><span class="font-xl fw-900 text-brand" id="amount">Rs. <strong > {{amount}}</strong> </span></strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <a href="{% url 'checkout'%}" class="btn "> <i class="fi-rs-box-alt mr-10"></i> Proceed To CheckOut</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+
+//     $(document).ready(function () {
+//     // AJAX request on quantity change
+//     $(".quantity-input").change(function () {
+//         var itemId = $(this).data("item-id");
+//         var newQuantity = $(this).val();
+
+//         $.ajax({
+//             url: "{% url 'pluscart' %}",  // Replace with your update_quantity URL
+//             type: "POST",
+//             data: {
+//                 item_id: itemId,
+//                 new_quantity: newQuantity,
+//                 csrfmiddlewaretoken: "{{ csrf_token }}"
+//             },
+//             success: function (data) {
+//                 var priceCell = $(".price-cell[data-item-id='" + itemId + "']");
+//                 priceCell.html(data.new_price);
+//                 $("#total").html(data.total);
+//             },
+//             error: function (error) {
+//                 console.log("Error:", error);
+//             }
+//         });
+//     });
+
+   
+
+   
+// });
+  // Increase quantity function
+  $('.qty-up').click(function(){
+    var id = $(this).attr("pid").toString();
+    var eml = this.parentNode.children[1];
+    
+    $.ajax({
+        type: "GET",
+        url: "/pluscart",
+        data: {
+            prod_id: id
+        },
+        success: function (data) {
+            // Check if quantity is less than or equal to 20
+            if (data.quantity <= 20) {
+                eml.innerText = data.quantity;
+                document.getElementById("amount").innerText = data.amount;
+                // Update subtotal with the value received from the backend
+                var subtotalElement = $("#subtotal-" + id);
+                subtotalElement.text('Rs.' + data.sub_total);
+            }
+        }
+    });
+});
+
+$('.qty-down').click(function(){
+    var id = $(this).attr("pid").toString();
+    var eml = this.parentNode.children[1];
+    
+    $.ajax({
+        type: "GET",
+        url: "/minuscart",
+        data: {
+            prod_id: id
+        },
+        success: function (data) {
+            // Check if quantity is greater than or equal to 1
+            if (data.quantity >= 1) {
+                eml.innerText = data.quantity;
+                document.getElementById("amount").innerText = data.amount;
+                // Update subtotal with the value received from the backend
+                var subtotalElement = $("#subtotal-" + id);
+                subtotalElement.text('Rs.' + data.sub_total);
+            }
+        }
+    });
+});
+
+    // Remove from cart function
+    $('.remove-cart').click(function(){
+        var id = $(this).attr("pid").toString();
+        var eml = this;
+        
+        $.ajax({
+            type: "GET",
+            url: "/removecart",
+            data: {
+                prod_id: id
+            },
+            success: function (data) {
+                $("#amount").text(data.amount);
+                $(eml).closest('tr').remove(); // Remove the entire table row
+            }
+        });
+    });
+
+</script>
+
+
+
+{% endblock %}

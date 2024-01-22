@@ -1,0 +1,68 @@
+
+{% extends 'users/base.html' %}
+{% block content %}
+{% load static %}
+
+    <section class="mt-50 mb-50">
+        <div class="container">
+            <div style="margin-bottom: 30px;"><h3>CLick the below button to proceed with the payment</h3></div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="table-responsive">
+                        <center><a href="{% url 'choosepayment' %}" class="btn btn-danger cancel-button" id="pay-btn">PAY NOW</a></center>
+                        
+                        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+                        <script>
+                            var options = {
+                                "key": "rzp_test_rpNoCHdMDddYge", // Enter the Key ID generated from the Dashboard
+                                "amount": "{{payment.amount}}",
+                                "currency": "INR",
+                                "name": "Electrokart",
+                                "description": "Purchases",
+                                "image": "https://example.com/your_logo",
+                                "order_id": "{{payment.id}}", //This is a sample Order ID. Pass the id obtained in the response of Step 1
+                                "handler": function (response){
+                        
+                                    //window.location.href='http://127.0.0.1:8000/users/success/?razorpay_payment_id=${response.razorpay_payment_id}&razorpay_order_id=${response.razorpay_order_id}&razorpay_order_id=${response=razorpay_order_id}'
+                                    console.log('Success')
+                                    window.location.href='http://127.0.0.1:8000/success/?order_id={{payment.id}}'
+                        
+                        
+                                    //alert(response.razorpay_payment_id);
+                                    //alert(response.razorpay_order_id);
+                                    //alert(response.razorpay_signature)
+                                    // console.log(response)
+                                    // window.location.href = {{success_url}}?order_id={{order.order_number}}&method=RAZORPAY&payment_id=${response.razorpay_payment_id}&payment_order_id=${response.razorpay_order_id}&payment_sign=${response.razorpay_signature}
+                                },
+                        
+                                "theme": {
+                                    "color": "#3399cc"
+                                }
+                            };
+                            var rzp1 = new Razorpay(options);
+                            rzp1.on('payment.failed', function (response){
+                                    //alert(response.error.code);
+                                    //alert(response.error.description);
+                                    //alert(response.error.source);
+                                    //alert(response.error.step);
+                                    alert(response.error.reason);
+                                    //alert(response.error.metadata.order_id);
+                                    //alert(response.error.metadata.payment_id);
+                            });
+                            document.getElementById('pay-btn').onclick = function(e){
+                                rzp1.open();
+                                e.preventDefault();
+                            }
+                        </script>
+                        
+                    </div>
+                    
+                    <div class="divider center_icon mt-50 mb-50"><i class="fi-rs-fingerprint"></i></div>
+                    
+                
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'myadmin/base.html' %}
+{% block content %}
+{% load static %}
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Change status of your coupons</h2>
+                    <p>electrokart.com</p>
+                </div>
+                <div>
+                    
+                    
+                </div>
+            </div>
+            <div class="card mb-4">
+                
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <label>Is used or not</label><br>
+                        <select name="status" id="status">
+                            <option value="used">Used</option>
+                            <option value="unused">Unused</option>
+                        </select>
+                        <br><br>
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+            </div> <!-- card end// -->
+            
+        </section> <!-- content-main end// -->
+{% endblock %}
