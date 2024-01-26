@@ -52,7 +52,7 @@
                                                 <h5 class="mb-0">Hello {{ username }} ! </h5>
                                             </div>
                                             <div class="card-body">
-                                                <p>From your account dashboard. you can easily check &amp; view your <a href="#">recent orders</a>, manage your <a href="#">shipping and billing addresses</a> and <a href="#">edit your password and account details.</a></p>
+                                                <p>From your account dashboard. you can easily check &amp; view your <a href="{% url 'myorders'%}">recent orders</a>, manage your <a href="{% url 'myaddress' %}">shipping and billing addresses</a> and <a href="{% url 'customer_info' name=request.user.username %}">edit your password and account details.</a></p>
                                             </div>
                                         </div>
                                     </div>

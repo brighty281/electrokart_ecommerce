@@ -133,6 +133,14 @@ def Logout(request):
         logout(request)
     return redirect('loginpage')
 
+@never_cache
+def contact(request):
+    return render(request,'users/contact.html')
+
+@never_cache
+def about(request):
+    return render(request,'users/about.html')
+
 def customer_info(request,name):   
     my_user=User.objects.get(username=name)
     my_customer, created = CustomerInfo.objects.get_or_create(user=my_user)
@@ -236,9 +244,12 @@ def add_addressinfo(request):
                 zipcode=new_zipcode,
                 state=new_state
             )
-            newly_added_address_id = new_address.id
-            request.session['newly_added_address_id'] = newly_added_address_id
-            return redirect('checkout')
+            if 'amount_to_pay' in request.session and request.session['amount_to_pay']:
+                newly_added_address_id = new_address.id
+                request.session['newly_added_address_id'] = newly_added_address_id
+                return redirect('checkout')
+            else:
+                return redirect('myaddress')
     return render(request,'users/add_address.html')
 
 def edit_addressinfo(request,uid):
@@ -259,7 +270,10 @@ def edit_addressinfo(request,uid):
             my_address.zipcode=new_zipcode
             my_address.state=new_state
             my_address.save()
-            return redirect('checkout')
+            if 'amount_to_pay' in request.session and request.session['amount_to_pay']:
+                return redirect('checkout')
+            else:
+                return redirect('myaddress')
     return render(request,'users/edit_address.html',{'my_address':my_address}) 
 
 # def delete_addressinfo(request,uid):
@@ -303,11 +317,13 @@ def product_list(request,uid):
         main_category=MainCategory.objects.get(id=uid)
         main_category_all=MainCategory.objects.all()
         my_products=Product.objects.filter(main_category=main_category)
+        product_count=my_products.count()
         context={
             'all_products':all_products,
             'main_category':main_category,
             'my_products':my_products,
-            'main_category_all':main_category_all
+            'main_category_all':main_category_all,
+            'product_count':product_count
         }
     return render(request,'users/product_list.html',context)
 
@@ -341,7 +357,10 @@ def search_productlist(request):
         #all_products=Product.objects.all()
         main_category_all=MainCategory.objects.all()
         my_category_id=request.GET.get('category')
-        if my_category_id=='all':
+
+        if not my_category_id:
+            my_products=Product.objects.all()
+        elif my_category_id=='all':
             my_products=Product.objects.all()
         else:
             my_category=MainCategory.objects.get(id=my_category_id)
@@ -378,11 +397,10 @@ def filter_productlist(request):
 
 #***********************cart***************************#
 
-def add_to_cart(request):
+def add_to_cart(request,uid):
     if request.user.is_authenticated:
         user=request.user
-        product_id=request.GET.get('prod_id')
-        product=Product.objects.get(id=product_id)
+        product=Product.objects.get(id=uid)
         Cart(user=user,product=product).save()
     return redirect('show_cart')
 
@@ -403,13 +421,8 @@ def show_cart(request):
             coupon_code = request.POST.get('coupon_code')  # Assuming the form field is named 'coupon_code'
             my_coupon = Coupon.objects.filter(code=coupon_code).first()
             used_coupons=UserCoupon.objects.filter(user=user,is_used=True)
-            print(my_coupon)
-            print(used_coupons)
             if my_coupon:
                 try:
-                    # if not my_coupon.is_valid():
-                    #     # Coupon validity has expired
-                    #     return render(request, 'users/cart.html', {'cart': cart, 'amount': amount, 'error_message': 'Coupon validity has expired','discount_amount':discount_amount})
                     for i in used_coupons:
                         if i.coupon.code==my_coupon.code:
                             return render(request, 'users/cart.html', {'cart': cart, 'amount': amount, 'error_message': 'Coupon used','discount_amount':discount_amount})
@@ -425,16 +438,6 @@ def show_cart(request):
                         new_used_coupon.save()
                         return render(request, 'users/cart.html', {'cart': cart, 'amount': amount, 'success_message': 'Coupon successfully added','discount_amount':discount_amount})
                         
-                    
-                    # Apply the discount if the coupon is valid 
-                    # else:
-                    #     return render(request, 'users/cart.html', {'cart': cart, 'amount': amount, 'error_message': 'Coupon used','discount_amount':discount_amount})
-                    #deactivate the coupon
-                    # my_coupon.is_active=False
-                    # my_coupon.save()
-
-                        
-
                 except AttributeError:
                     # Handle missing attributes or unexpected data
                     return render(request, 'users/cart.html', {'cart': cart, 'amount': amount, 'error_message': 'Invalid coupon data','discount_amount':discount_amount})
@@ -444,12 +447,9 @@ def show_cart(request):
     return render(request,'users/cart.html',{'cart':cart,'amount':amount,'discount_amount':discount_amount})
 
 def plus_cart(request):
-    
     if request.method == 'GET':
         prod_id = request.GET.get('prod_id')
         user_cart = Cart.objects.filter(product=prod_id, user=request.user)
-
-        
         if user_cart.exists():
             c = user_cart.first()  # Considering only the first instance if multiple are found
             c.quantity += 1
@@ -476,7 +476,6 @@ def plus_cart(request):
 
     # Handle other HTTP methods if needed
     return JsonResponse({'error': 'Invalid request method'})
-
 
 
 def minus_cart(request):
@@ -563,9 +562,9 @@ def checkout(request):
         if newly_added_address_id:
             del request.session['newly_added_address_id']
         request.session['amount_to_pay']=amount
-        request.session['number_of_items']=number_of_items
+        #request.session['number_of_items']=number_of_items
 
-        #payment and address selection
+        
         
     return render(request,'users/checkout.html',{'my_address':my_address,'amount':amount,'cart_items':cart_items,'discount_amount':discount_amount,'total_amount':total_amount,'newly_added_address_id': newly_added_address_id})
 
@@ -580,8 +579,6 @@ def payment_done(request):
             payment_method=request.POST.get('payment_method')
             cart=Cart.objects.filter(user=user)
         
-            
-
         if not cust_id:
             return render(request,'users/checkout.html',{'error_message':'please select an address'})
 

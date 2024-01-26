@@ -343,7 +343,6 @@ def edit_subcat_list(request,uid):
         return render(request, 'myadmin/adminlogin.html')
     
 def delete_subcat_list(request,uid):
-
     if request.user.is_authenticated and request.user.is_superuser:
         sub_category=SubCategory.objects.get(id=uid)
         main_id=sub_category.main_category_id
