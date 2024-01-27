@@ -80,9 +80,9 @@ WSGI_APPLICATION = 'electrokart.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'electrokart_db',
-        'USER':'postgres',
-        'PASSWORD':'#Saviour99',
+        'NAME': config('NAME'),
+        'USER': config('USER'),
+        'PASSWORD': config('PASSWORD'),
         'HOST':'localhost',
         'PORT':'5432',
 
