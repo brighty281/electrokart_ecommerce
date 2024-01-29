@@ -5,11 +5,8 @@
             <div class="content-header">
                 <div>
                     <h2 class="content-title card-title">Add user</h2>
-                    
                 </div>
                 <div>
-                    <a href="#" class="btn btn-light rounded font-md">Export</a>
-                    <a href="#" class="btn btn-light rounded  font-md">Import</a>
                     <a href="{% url 'maincat_list' %}" class="btn btn-primary btn-sm rounded">back</a>
                 </div>
             </div>
@@ -24,24 +21,13 @@
                         {% endif %}
                         <div>
                           <label for="username">Enter new Category</label>
-                          <input type="text" id="catname" name="catname" required><br><br>
+                          <input type="text" id="catname" name="catname" class="form-control" style="width:200px;" required><br><br>
                           
-                          <button type="submit">Add Category</button>
+                          <button type="submit" class="btn btn-primary">Add Category</button>
                         </div>
                       </form>
                 </div> <!-- card-body end// -->
             </div> <!-- card end// -->
-            <div class="pagination-area mt-30 mb-50">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-start">
-                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                        <li class="page-item"><a class="page-link" href="#">02</a></li>
-                        <li class="page-item"><a class="page-link" href="#">03</a></li>
-                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                        <li class="page-item"><a class="page-link" href="#">16</a></li>
-                        <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
-                    </ul>
-                </nav>
-            </div>
+            
         </section> <!-- content-main end// -->
 {% endblock %}

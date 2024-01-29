@@ -77,18 +77,7 @@
     <main class="main-wrap">
         <header class="main-header navbar">
             <div class="col-search">
-                <form class="searchform">
-                    <div class="input-group">
-                        <input list="search_terms" type="text" class="form-control" placeholder="Search term">
-                        <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
-                    </div>
-                    <datalist id="search_terms">
-                        <option value="Products">
-                        <option value="New orders">
-                        <option value="Apple iphone">
-                        <option value="Ahmed Hassan">
-                    </datalist>
-                </form>
+                
             </div>
             <div class="col-nav">
                 <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button>
@@ -132,49 +121,25 @@
         <section class="content-main">
             <div class="content-header">
                 <div>
-                    <h2 class="content-title card-title">products</h2>
+                    <h2 class="content-title card-title">Products</h2>
                     <p>product are listed below.</p>
                 </div>
                 <div>
-                    
                     <a href="{% url 'add_product' %}" class="btn btn-primary btn-sm rounded">Add products</a>
                 </div>
             </div>
             <div class="card mb-4">
-                <header class="card-header">
-                    <div class="row align-items-center">
-                        <div class="col col-check flex-grow-0">
-                            <div class="form-check ms-2">
-                                <input class="form-check-input" type="checkbox" value="">
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                            
-                        </div>
-                        <div class="col-md-2 col-6">
-                            
-                        </div>
-                        <div class="col-md-2 col-6">
-                            
-                        </div>
-                    </div>
-                </header> <!-- card-header end// -->
+                
                 <div class="card-body">
                     {% for i in my_products %}
                     <article class="itemlist">
                         <div class="row align-items-center">
-                            <div class="col col-check flex-grow-0">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox">
-                                </div>
-                            </div>
+                            
                             <div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
                                 <a class="itemside" href="#">
                                     <div class="left">
                                         {% if i.main_img %}
                                             <img src="{{ i.main_img.url }}" class="img-sm img-thumbnail" alt="">
-
-                                        
                                         {% endif %}
                                     </div>
                                     <div class="info">
@@ -207,18 +172,6 @@
                      <!-- itemlist  .// -->
                 </div> 
             </div> <!-- card end// -->
-            <div class="pagination-area mt-30 mb-50">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-start">
-                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                        <li class="page-item"><a class="page-link" href="#">02</a></li>
-                        <li class="page-item"><a class="page-link" href="#">03</a></li>
-                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                        <li class="page-item"><a class="page-link" href="#">16</a></li>
-                        <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
-                    </ul>
-                </nav>
-            </div>
         </section> <!-- content-main end// -->
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">

@@ -6,7 +6,7 @@
 <head>
     {% load static %}
     <meta charset="utf-8">
-    <title>electrokart</title>
+    <title>electrokart-Ecommerce</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -48,7 +48,6 @@
                     <a class="menu-link" href="{% url 'userslist' %}"> <i class="icon material-icons md-person"></i>
                         <span class="text">User management</span>
                     </a>
-                    
                 </li>
                 <li class="menu-item">
                     <a class="menu-link" href="{% url 'product_list'%}"> <i class="icon material-icons md-shopping_bag"></i>
@@ -81,18 +80,7 @@
     <main class="main-wrap">
         <header class="main-header navbar">
             <div class="col-search">
-                <form class="searchform">
-                    <div class="input-group">
-                        <input list="search_terms" type="text" class="form-control" placeholder="Search term">
-                        <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
-                    </div>
-                    <datalist id="search_terms">
-                        <option value="Products">
-                        <option value="New orders">
-                        <option value="Apple iphone">
-                        <option value="Ahmed Hassan">
-                    </datalist>
-                </form>
+                
             </div>
             <div class="col-nav">
                 <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button>
@@ -211,7 +199,6 @@
                                         <div class="dropdown">
                                             <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
                                             <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#">View detail</a>
                                                 <a class="dropdown-item" href="{% url 'edit_orderlist' i.id %}">Edit info</a>
                                                 <a class="dropdown-item text-danger" href="{% url 'delete_order' i.id %}">Delete</a>
                                             </div>
@@ -225,18 +212,7 @@
                     </div> <!-- table-responsive //end -->
                 </div> <!-- card-body end// -->
             </div> <!-- card end// -->
-            <div class="pagination-area mt-15 mb-50">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-start">
-                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                        <li class="page-item"><a class="page-link" href="#">02</a></li>
-                        <li class="page-item"><a class="page-link" href="#">03</a></li>
-                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                        <li class="page-item"><a class="page-link" href="#">16</a></li>
-                        <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
-                    </ul>
-                </nav>
-            </div>
+            
         </section> <!-- content-main end// -->
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">

@@ -8,58 +8,39 @@
                     <p>add products here</p>
                 </div>
                 <div>
-                    
                     <a href="{% url 'product_list' %}" class="btn btn-primary btn-sm rounded">Back to list</a>
                 </div>
             </div>
             <div class="card mb-4">
-                <header class="card-header">
-                    <div class="row align-items-center">
-                        <div class="col col-check flex-grow-0">
-                            <div class="form-check ms-2">
-                                <input class="form-check-input" type="checkbox" value="">
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                            
-                        </div>
-                        <div class="col-md-2 col-6">
-                            
-                        </div>
-                        <div class="col-md-2 col-6">
-                            
-                        </div>
-                    </div>
-                </header> <!-- card-header end// -->
                 <div class="card-body">
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <label>Main Category:</label>
-                        <select name="main_category">
+                        <select name="main_category"class="form-control" style="width:200px;">
                             {% for category in main_category %}
                                 <option value="{{ category.id }}">{{ category.name }}</option>
                             {% endfor %}
                         </select><br><br>
                         <label>Title:</label>
-                        <input type="text" name="title"><br><br>
+                        <input type="text" name="title" class="form-control" style="width:200px;"><br><br> 
                         <label>Base name (for similar variants):</label>
-                        <input type="text" name="base_name"><br><br>
+                        <input type="text" name="base_name" class="form-control" style="width:200px;"><br><br>
                         <label>Our Price:</label>
-                        <input type="number" name="our_price"><br><br>
+                        <input type="number" name="our_price" class="form-control" style="width:200px;"><br><br>
                         <label>Real Price:</label>
-                        <input type="number" name="real_price"><br><br>
+                        <input type="number" name="real_price" class="form-control" style="width:200px;"><br><br>
                         <label>Description:</label>
-                        <textarea name="description"></textarea><br><br>
+                        <textarea name="description" class="form-control" style="width:200px;"></textarea><br><br>
                         <label>Main Image:</label>
-                        <input type="file" name="main_img"><br><br>
+                        <input type="file" name="main_img" class="form-control" style="width:300px;"><br><br>
                         <label>Additional Images:</label>
-                        <input type="file" name="images" multiple><br><br>
+                        <input type="file" name="images" multiple class="form-control" style="width:300px;"><br><br>
 
                         <div id="highlights-container">
                             <label>Product Highlights:</label><br>
                             <!-- Existing highlights will be displayed here -->
                         </div>
-                        <button type="button" onclick="addHighlightField()">Add Product Highlight</button><br><br>
+                        <button type="button" class="btn btn-primary" onclick="addHighlightField()">Add Product Highlight</button><br><br>
                         <div id="features-container">
                             <div class="feature-container">
                               <label>Enter Feature & Feature description</label><br>
@@ -68,8 +49,8 @@
                               <textarea class="feature-description" name="feature_descriptions[]" placeholder="Enter feature description"></textarea>
                             </div>
                           </div>
-                          <button type="button" onclick="addFeatureField()">Add Feature</button><br><br>
-                        <button type="submit">Submit</button>
+                          <button type="button" class="btn btn-primary" onclick="addFeatureField()">Add Feature</button><br><br>
+                        <button type="submit" class="btn btn-primary">Submit</button>
 
                     </form>
                     

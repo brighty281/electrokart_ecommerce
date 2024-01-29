@@ -8,7 +8,6 @@
                     <p>Edit coupons here</p>
                 </div>
                 <div>
-                    
                     <a href="{% url 'couponlist' %}" class="btn btn-primary btn-sm rounded">Back</a>
                 </div>
             </div>
@@ -18,22 +17,22 @@
                     <form method="POST">
                         {% csrf_token %}
                         <label>New coupon code</label><br>
-                        <input type="text" value="{{my_coupon.code}}" name=code>
+                        <input type="text" class="form-control" style="width:200px;" value="{{my_coupon.code}}" name=code>
                         <br><br>
-                        <label>Discount Rate*</label><br>
-                        <input type="number" value="{{my_coupon.discount}}" name="discount" min="1" max="100" step="1"><br><br>
+                        <label>Discount Rate* %</label><br>
+                        <input type="number" class="form-control" style="width:200px;" value="{{my_coupon.discount}}" name="discount" min="1" max="100" step="1"><br><br>
                         <label>Valid from*</label><br>
-                        <input type="datetime-local" value="{{my_coupon.valid_from|date:'Y-m-d\TH:i'}}" id="valid_from" name="valid_from"><br><br>
+                        <input type="datetime-local" class="form-control" style="width:200px;" value="{{my_coupon.valid_from|date:'Y-m-d\TH:i'}}" id="valid_from" name="valid_from"><br><br>
                         <label>Valid to*</label><br>
-                        <input type="datetime-local" value="{{my_coupon.valid_to|date:'Y-m-d\TH:i'}}" id="valid_to" name="valid_to"><br><br>
+                        <input type="datetime-local" class="form-control" style="width:200px;" value="{{my_coupon.valid_to|date:'Y-m-d\TH:i'}}" id="valid_to" name="valid_to"><br><br>
                         <label>Is Active</label>
                     
-                        <select name="status" id="status">
+                        <select name="status" class="form-control" style="width:200px;" id="status">
                             <option value="active">Active</option>
                             <option value="inactive">Inactive</option>
                         </select>
                         <br><br>
-                        <button type="submit">Submit</button>
+                        <button class="btn btn-primary" type="submit">Submit</button>
                     </form>
                     
                 </div>

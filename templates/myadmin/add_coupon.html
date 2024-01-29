@@ -18,22 +18,22 @@
                     <form method="POST">
                         {% csrf_token %}
                         <label>New coupon code</label><br>
-                        <input type="text" name=code>
+                        <input type="text" name=code class="form-control" style="width:200px;">
                         <br><br>
                         <label>Discount Rate</label><br>
-                        <input type="number" name="discount" min="1" max="100" step="1"><br><br>
+                        <input type="number" name="discount" min="1" max="100" step="1" class="form-control" style="width:200px;"><br><br>
                         <label>Valid from</label><br>
-                        <input type="datetime-local" id="valid_from" name="valid_from"><br><br>
+                        <input type="datetime-local" id="valid_from" name="valid_from" class="form-control" style="width:200px;"><br><br>
                         <label>Valid to</label><br>
-                        <input type="datetime-local" id="valid_to" name="valid_to"><br><br>
+                        <input type="datetime-local" id="valid_to" name="valid_to" class="form-control" style="width:200px;"><br><br>
                         <label>Is Active</label>
                     
-                        <select name="status" id="status">
+                        <select name="status" id="status" class="form-control" style="width:200px;">
                             <option value="active">Active</option>
                             <option value="inactive">Inactive</option>
                         </select>
                         <br><br>
-                        <button type="submit">Submit</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                     
                 </div>
