@@ -667,14 +667,20 @@ def choose_payment(request):
     print(amount)
     client=razorpay.Client(auth = (settings.RAZOR_KEY_ID,settings.RAZOR_KEY_SECRET) )
     payment=client.order.create({'amount': amount*100 , 'currency': 'INR', 'payment_capture':1})
-    
+    order_id=request.session['order_id']
     context={
-        'payment':payment
+        'payment':payment,
+        'order_id':order_id
     }    
     return render(request,'users/choose_payment.html',context)
 
 def success(request):
-    order_id=request.session['order_id']
+    print('------------------------------')
+    print(request.GET['order_id'])
+    # print(request.session['order_id'])
+    print('------------------------------')
+    # order_id=request.session['order_id']
+    order_id=request.GET['order_id']
     main_order=Order.objects.get(id=order_id)
     user=request.user
     cart=Cart.objects.filter(user=user)
