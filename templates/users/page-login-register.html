@@ -18,6 +18,47 @@
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/imgs/theme/favicon.svg' %}">
     <!-- Template CSS -->
     <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+    <style>
+    .d-flex {
+        display: flex;
+    }
+    .justify-content-center {
+        justify-content: center;
+    }
+    .align-items-center {
+        align-items: center;
+    }
+    .background-white {
+        background-color: white;
+    }
+    .border-radius-10 {
+        border-radius: 10px;
+    }
+    .shadow-lg {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .text-center {
+        text-align: center;
+    }
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .btn {
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .link {
+        text-decoration: none;
+    }
+</style>
+
+
 </head>
 
 <body>
@@ -62,9 +103,9 @@
                 </div>
             </div>
         </div>
-        <div class="header-bottom sticky-bar sticky-white-bg">
+        <div>
             <div class="container">
-                <div class="header-wrap header-space-between position-relative">
+                <div>
                     <div class="logo logo-width-1">
                         <a href="{% url 'loginpage' %}"><img src="{% static 'assets/imgs/theme/electrokart.svg' %}" alt="logo"></a>
                     </div>
@@ -75,64 +116,47 @@
         </div>
     </header>
     
-    <main class="main">
-        <div class="page-header breadcrumb-wrap">
-            
-        </div>
-        <section class="pt-150 pb-150">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-10 m-auto">
-                        <div class="row">
-                            
-                            <div class="col-lg-1"></div>
-                            <div class="col-lg-6">
-                                <div class="login_wrap widget-taber-content p-30 background-white border-radius-5">
-                                    <div class="padding_eight_all bg-white">
-                                        <div class="heading_s1">
-                                            <h3 class="mb-30">Create an Account</h3>
-                                        </div>
-                                        <p class="mb-50 font-sm">
-                                            Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our privacy policy
-                                        </p>
-                                        <form method="post" >
-                                            {% csrf_token %}
-                                            {% if messages %}
-                                        {% for msg in messages %}
-                                        <p class="message {% if message.tags %}{{ message.tags }}{% endif %}">{{msg}}</p>
-                                        {% endfor %}
-                                        {% endif %}
-                                            <div class="form-group">
-                                                <input type="text" required="" name="username" placeholder="Username">
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="text" required="" name="email" placeholder="Email">
-                                            </div>
-                                            <div class="form-group">
-                                                <input required="" type="password" name="password" placeholder="Password">
-                                            </div>
-                                            <div class="form-group">
-                                                <input required="" type="password" name="confirm_password" placeholder="Confirm password">
-                                            </div>
-                                            
-                                            <div class="form-group">
-                                                <button type="submit" class="btn btn-fill-out btn-block hover-up" name="login">Submit &amp; Register</button>
-                                            </div>
-                                        </form>
-                                        <div class="divider-text-center mt-15 mb-15">
-                                            <span> or</span>
-                                        </div>
-                                        
-                                        <div class="text-muted text-center">Already have an account? <a href="{% url 'loginpage' %}">Sign in now</a></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+   <main class="main">
+    <section class="pt-150 pb-150 d-flex justify-content-center align-items-center" style="min-height: 100vh; background-color: #e6f5ea;">
+        <div class="login_wrap p-30 background-white border-radius-10 shadow-lg" style="max-width: 400px; width: 100%; background-color: white; margin-bottom: 50px;">
+            <div class="heading_s1 text-center">
+                <h3 class="mb-30" style="color: #2e7d32;">Create an Account</h3>
             </div>
-        </section>
-    </main>
+            <p class="mb-50 font-sm text-center">
+                Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our privacy policy.
+            </p>
+            <form method="post">
+                {% csrf_token %}
+                {% if messages %}
+                    {% for msg in messages %}
+                        <p class="message {% if msg.tags %}{{ msg.tags }}{% endif %}">{{ msg }}</p>
+                    {% endfor %}
+                {% endif %}
+                <div class="form-group">
+                    <input type="text" required="" name="username" placeholder="Username" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input type="text" required="" name="email" placeholder="Email" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input required="" type="password" name="password" placeholder="Password" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input required="" type="password" name="confirm_password" placeholder="Confirm password" class="form-control">
+                </div>
+                <div class="form-group form-button">
+                    <button type="submit" class="btn btn-fill-out btn-block" name="login" style="background-color: #2e7d32; color: white;">Submit &amp; Register</button>
+                </div>
+            </form>
+            <div class="divider-text-center mt-15 mb-15 text-center">
+                <span>or</span>
+            </div>
+            <div class="text-muted text-center">Already have an account? <a href="{% url 'loginpage' %}" style="color: #2e7d32;">Sign in now</a></div>
+        </div>
+    </section>
+</main>
+
+
     <footer class="main">
         <section class="newsletter p-30 text-white wow fadeIn animated">
             <div class="container">

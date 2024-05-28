@@ -18,6 +18,41 @@
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/imgs/theme/favicon.svg' %}">
     <!-- Template CSS -->
     <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+    <style>
+    .d-flex {
+        display: flex;
+    }
+    .justify-content-center {
+        justify-content: center;
+    }
+    .align-items-center {
+        align-items: center;
+    }
+    .background-white {
+        background-color: white;
+    }
+    .border-radius-10 {
+        border-radius: 10px;
+    }
+    .shadow-lg {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .text-center {
+        text-align: center;
+    }
+    .form-control {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .btn {
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
+
 </head>
 
 <body>
@@ -62,48 +97,45 @@
                 </div>
             </div>
         </div>
-        <div class="header-bottom sticky-bar sticky-white-bg">
+        <div>
             <div class="container">
-                <div class="header-wrap header-space-between position-relative">
+                <div>
                     <div class="logo logo-width-1">
                         <a href="{% url 'loginpage' %}"><img src="{% static 'assets/imgs/theme/electrokart.svg' %}" alt="logo"></a>
-                    </div>
-                    
-                    
+                    </div> 
                 </div>
             </div>
         </div>
     </header>
     
-    <main class="main">
-        <div class="page-header breadcrumb-wrap">
-            
-        </div>
-        <section class="pt-150 pb-150">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-10 m-auto">
-                        <div class="row">
-                            <center><strong>CONFIRM YOUR ACCOUNT</strong></center>
-                            <center><p>check the inbox of your email - {{email}} - and enter the otp<p></center>
-                            {% if messages %}
-                                {% for msg in messages %}
-                                    <p class="message {% if msg.tags %} {{msg}} {% endif %} ">{{msg}}</p>
-                                {% endfor %}
-                            {% endif %}
-                            <form action="{% url 'otp_verification' %}" method="POST">
-                                {% csrf_token %}
-                                <center>Enter the otp : <input type="text" placeholder="enter the otp" name="otp" id="otp"></center><br><br>
-                                <center><button type="submit">verify</button></center>
-                            </form>
-                            
-                            
-                        </div>
-                    </div>
-                </div>
+<main class="main">
+    <section class="pt-150 pb-150 d-flex justify-content-center align-items-center" style="min-height: 100vh; background-color: #e6f5ea;">
+        <div class="otp_wrap p-30 background-white border-radius-10 shadow-lg" style="max-width: 500px; width: 100%; background-color: white;">
+            <div class="text-center">
+                <strong style="color: #2e7d32; font-size: 24px;">CONFIRM YOUR ACCOUNT</strong>
             </div>
-        </section>
-    </main>
+            <div class="text-center mt-3 mb-4">
+                <p>Check the inbox of your email - <strong>{{email}}</strong> - and enter the OTP.</p>
+            </div>
+            {% if messages %}
+                <div class="text-center">
+                    {% for msg in messages %}
+                        <p class="message {% if msg.tags %} {{msg.tags}} {% endif %}" style="color: red;">{{msg}}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <form action="{% url 'otp_verification' %}" method="POST" class="text-center">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="otp" style="display: block; margin-bottom: 5px;">Enter the OTP:</label>
+                    <input type="text" placeholder="Enter the OTP" name="otp" id="otp" class="form-control" style="width: 70%; margin: 0 auto;">
+                </div>
+                <button type="submit" class="btn btn-fill-out btn-block" style="background-color: #2e7d32; color: white; width: 70%; margin: 20px auto 0;">Verify</button>
+            </form>
+        </div>
+    </section>
+</main>
+
     <footer class="main">
         <section class="newsletter p-30 text-white wow fadeIn animated">
             <div class="container">

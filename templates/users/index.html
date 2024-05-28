@@ -186,7 +186,11 @@
                                         <li><a href="#"><img src="{% static 'assets/imgs/theme/flag-ru.png' %}" alt="">Pусский</a></li>
                                     </ul>
                                 </li>
+                                {% if request.user.is_authenticated %}
                                 <li><i class="fi-rs-user"></i><a href="{% url 'loginpage' %}">{{request.user}}</a></li>
+                                {% else %}
+                                <li><i class="fi-rs-user"></i><a href="{% url 'loginpage' %}">Login/signup</a></li>
+                                {% endif%}
                             </ul>
                         </div>
                     </div>
@@ -371,9 +375,15 @@
                     <div class="single-mobile-header-info mt-30">
                         <a  href="page-contact.html"> Our location </a>
                     </div>
+                    {% if request.user.is_authenticated %}
                     <div class="single-mobile-header-info">
-                        <a href="{% url 'pageaccount'%}">{{request.user}} </a>
+                        <a href="{% url 'pageaccount'%}">{{request.user.username}} </a>
                     </div>
+                    {% else %}
+                        <div class="single-mobile-header-info">
+                            <a href="{% url 'pageaccount'%}">Login/Signup </a>
+                        </div>
+                    {% endif %}
                     <div class="single-mobile-header-info">
                         <a href="#">(+01) - 2345 - 6789 </a>
                     </div>
@@ -434,7 +444,7 @@
                         {% for category in main_category_all %}
                             <li><a href="{% url 'productlist' category.id %}">{{ category.name }}</a></li>
                         {% endfor %}
-                    </ul>
+                    </ul>       
                 </div>                        
             </div>
             <div class="col-lg-9">
@@ -464,9 +474,7 @@
                                             <div class="product-img-action-wrap">
                                                 <div class="product-img product-img-zoom">
                                                     <a href="{% url 'product_details' uid=product.id %}">
-                                                        
                                                             <img class="default-img" src="{{ product.main_img.url }}" alt="{{ product.title }}">
-                                                    
                                                     </a>
                                                 </div>
                                                 <div class="product-badges product-badges-position product-badges-mrg">

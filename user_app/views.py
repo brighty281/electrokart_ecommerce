@@ -119,7 +119,7 @@ def loginpage(request):
         if user is not None and not user.is_superuser:
             request.session['username'] = username
             login(request, user)
-            return redirect('pageaccount')
+            return redirect('landingpage')
         else:
             messages.error(request, 'Invalid credentials')
             return redirect('loginpage')
@@ -131,7 +131,7 @@ def Logout(request):
     if request.method=='POST':
         request.session.flush()
         logout(request)
-    return redirect('loginpage')
+    return redirect('landingpage')
 
 @never_cache
 def contact(request):
@@ -290,18 +290,19 @@ def edit_addressinfo(request,uid):
 @never_cache
 @admin_required
 def landing_page(request):
-    if request.user.is_authenticated:
-        main_category_all=MainCategory.objects.all()
-        latest_products=[]
-        for category in main_category_all:
-            product=Product.objects.filter(main_category=category,product_active=True).order_by('-our_price').first()
-            latest_products.append(product)
+    # if request.user.is_authenticated:
+    main_category_all=MainCategory.objects.all()
+    latest_products=[]
+    for category in main_category_all:
+        product=Product.objects.filter(main_category=category,product_active=True).order_by('-our_price').first()
+        latest_products.append(product)
 
-        context={
-            'main_category_all':main_category_all,
-            'latest_products':latest_products
-        }
+    context={
+        'main_category_all':main_category_all,
+        'latest_products':latest_products
+    }
     return render(request,'users/index.html',context)
+
 
 def base_page(request):
     if request.user.is_authenticated:
@@ -312,87 +313,90 @@ def base_page(request):
     return render(request,'users/base.html',context)
 
 def product_list(request,uid):
-    if request.user.is_authenticated:
-        all_products=Product.objects.all()
-        main_category=MainCategory.objects.get(id=uid)
-        main_category_all=MainCategory.objects.all()
-        my_products=Product.objects.filter(main_category=main_category)
-        product_count=my_products.count()
-        context={
-            'all_products':all_products,
-            'main_category':main_category,
-            'my_products':my_products,
-            'main_category_all':main_category_all,
-            'product_count':product_count
-        }
+    # if request.user.is_authenticated:
+    all_products=Product.objects.all()
+    main_category=MainCategory.objects.get(id=uid)
+    main_category_all=MainCategory.objects.all()
+    my_products=Product.objects.filter(main_category=main_category)
+    product_count=my_products.count()
+    context={
+        'all_products':all_products,
+        'main_category':main_category,
+        'my_products':my_products,
+        'main_category_all':main_category_all,
+        'product_count':product_count
+    }
     return render(request,'users/product_list.html',context)
 
 def all_productlist(request):
-    if request.user.is_authenticated:
-        all_products=Product.objects.all()
-        main_category_all=MainCategory.objects.all()
+    # if request.user.is_authenticated:
+    all_products=Product.objects.all()
+    main_category_all=MainCategory.objects.all()
     return render(request,'users/all_productlist.html',{'all_products':all_products,'main_category_all':main_category_all})
 
+
 def product_details(request,uid):
-    if request.user.is_authenticated:
-        my_product=Product.objects.get(id=uid)
-        my_images=MultipleImages.objects.filter(product=my_product)
-        highlights=ProductHighlights.objects.filter(product=my_product)
-        additional_info=AdditionalInfo.objects.filter(product=my_product)
-        variant_list=Product.objects.filter(base_name=my_product.base_name)
-        item_already_in_cart=False
+    print(type(uid))
+    # if request.user.is_authenticated:
+    my_product=Product.objects.get(id=uid)
+    my_images=MultipleImages.objects.filter(product=my_product)
+    highlights=ProductHighlights.objects.filter(product=my_product)
+    additional_info=AdditionalInfo.objects.filter(product=my_product)
+    variant_list=Product.objects.filter(base_name=my_product.base_name)
+    item_already_in_cart=False
+    if request.user == 'AnonymousUser':
         item_already_in_cart=Cart.objects.filter(Q(product=uid) & Q(user=request.user)).exists()
-        context={
-            'my_product':my_product,
-            'my_images':my_images,
-            'variant_list':variant_list,
-            'highlights':highlights,
-            'additional_info':additional_info,
-            'item_already_in_cart':item_already_in_cart
-            }
+    context={
+        'my_product':my_product,
+        'my_images':my_images,
+        'variant_list':variant_list,
+        'highlights':highlights,
+        'additional_info':additional_info,
+        'item_already_in_cart':item_already_in_cart
+        }
     return render(request,'users/product_details.html',context)
 
 def search_productlist(request):
-    if request.user.is_authenticated:
+    # if request.user.is_authenticated:
         #all_products=Product.objects.all()
-        main_category_all=MainCategory.objects.all()
-        my_category_id=request.GET.get('category')
+    main_category_all=MainCategory.objects.all()
+    my_category_id=request.GET.get('category')
 
-        if not my_category_id:
-            my_products=Product.objects.all()
-        elif my_category_id=='all':
-            my_products=Product.objects.all()
-        else:
-            my_category=MainCategory.objects.get(id=my_category_id)
-            my_products=Product.objects.filter(main_category=my_category)
-        
-        query=request.GET.get('search')
-        if query:
-            results=my_products.filter(Q(title__icontains=query) |Q(base_name__icontains=query))
-            result_count=results.count()
-        else:
-            return redirect('all_productlist')
+    if not my_category_id:
+        my_products=Product.objects.all()
+    elif my_category_id=='all':
+        my_products=Product.objects.all()
+    else:
+        my_category=MainCategory.objects.get(id=my_category_id)
+        my_products=Product.objects.filter(main_category=my_category)
+    
+    query=request.GET.get('search')
+    if query:
+        results=my_products.filter(Q(title__icontains=query) |Q(base_name__icontains=query))
+        result_count=results.count()
+    else:
+        return redirect('all_productlist')
     return render(request,'users/search_productlist.html',{'results':results, 'main_category_all':main_category_all,'result_count':result_count})
 
 
 def filter_productlist(request):
-    if request.user.is_authenticated:
-        all_products = Product.objects.all()
-        main_category_all = MainCategory.objects.all()
-        
-        min_price = request.GET.get('minPrice')
-        max_price = request.GET.get('maxPrice')
-        
-        # Ensure min_price and max_price are integers or floats
-        if min_price is not None and max_price is not None:
-            min_price = float(min_price)
-            max_price = float(max_price)
-            # Filter products based on price range
-            results = all_products.filter(our_price__gte=min_price, our_price__lte=max_price)
-            result_count=results.count()
-        else:
-            results = all_products  # Return all products if no price range is specified
-            result_count=results.count()
+    # if request.user.is_authenticated:
+    all_products = Product.objects.all()
+    main_category_all = MainCategory.objects.all()
+    
+    min_price = request.GET.get('minPrice')
+    max_price = request.GET.get('maxPrice')
+    
+    # Ensure min_price and max_price are integers or floats
+    if min_price is not None and max_price is not None:
+        min_price = float(min_price)
+        max_price = float(max_price)
+        # Filter products based on price range
+        results = all_products.filter(our_price__gte=min_price, our_price__lte=max_price)
+        result_count=results.count()
+    else:
+        results = all_products  # Return all products if no price range is specified
+        result_count=results.count()
     return render(request,'users/search_productlist.html',{'results': results, 'main_category_all': main_category_all, 'result_count':result_count})
 
 #***********************cart***************************#
@@ -402,7 +406,9 @@ def add_to_cart(request,uid):
         user=request.user
         product=Product.objects.get(id=uid)
         Cart(user=user,product=product).save()
-    return redirect('show_cart')
+        return redirect('show_cart')
+    else:
+        return redirect('loginpage')
 
 def show_cart(request):
     if request.user.is_authenticated:
@@ -444,7 +450,9 @@ def show_cart(request):
             
             # Handle invalid coupon code or coupon not found
             return render(request, 'users/cart.html', {'cart': cart, 'amount': amount, 'error_message': 'Invalid coupon code','discount_amount':discount_amount})
-    return render(request,'users/cart.html',{'cart':cart,'amount':amount,'discount_amount':discount_amount})
+        return render(request,'users/cart.html',{'cart':cart,'amount':amount,'discount_amount':discount_amount})
+    else:
+        return redirect('loginpage')
 
 def plus_cart(request):
     if request.method == 'GET':
@@ -681,6 +689,7 @@ def success(request):
     print('------------------------------')
     # order_id=request.session['order_id']
     order_id=request.GET['order_id']
+    print(order_id)
     main_order=Order.objects.get(id=order_id)
     user=request.user
     cart=Cart.objects.filter(user=user)
