@@ -637,7 +637,9 @@ def my_orders(request):
         discount_amount=request.session.get('discount_amount')
         print(discount_amount)
         placed_orders=OrderPlaced.objects.filter(user=user).order_by('-id')
-    return render(request,'users/my_orders.html',{'placed_orders':placed_orders})
+        return render(request,'users/my_orders.html',{'placed_orders':placed_orders})
+    else:
+        return redirect('loginpage')
 
 def cancel_order(request,uid):
     if request.user.is_authenticated:
