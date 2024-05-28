@@ -730,9 +730,9 @@ def my_wallet(request):
         return render(request,'users/my_wallet.html',{'mywallet':mywallet})
     
 
-def invoice(request):
-    order_id=request.session['order_id']
-    main_order=Order.objects.get(id=order_id)
+def invoice(request,id):
+    # order_id=request.session['order_id']
+    main_order=Order.objects.get(id=id)
     order_items=OrderPlaced.objects.filter(order=main_order)
     print(order_items)
     context={
