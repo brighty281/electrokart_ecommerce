@@ -691,7 +691,7 @@ def success(request):
     order_id=request.GET['order_id']
     print(order_id)
     main_order=Order.objects.get(id=order_id)
-    user=request.user
+    user=request.user.id
     cart=Cart.objects.filter(user=user)
     for c in cart:   
         c.delete()
