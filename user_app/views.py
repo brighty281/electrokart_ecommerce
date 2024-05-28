@@ -704,7 +704,7 @@ def success(request):
         orders.payment_status='online_payment_done'
         orders.status='Accepted'
         orders.save()
-    return render(request, 'users/success_page.html')
+    return render(request, 'users/success_page.html',{'order_id':order_id})
 
 
 def my_coupons(request):

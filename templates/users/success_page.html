@@ -10,7 +10,7 @@
                         <h1>Thank you, customer!</h1>
                         <p>Your payment/cash on delievery is done.</p>
                         <a href="{% url 'myorders' %}" class="btn btn-primary">My orders</a>
-                        <a href="{% url 'invoice' %}" class="btn btn-primary">display invoice</a>
+                        <a href="{% url 'invoice' id=order_id %}" class="btn btn-primary">display invoice</a>
                     </div>
                         
                 <div class="divider center_icon mt-50 mb-50"><i class="fi-rs-fingerprint"></i></div>
